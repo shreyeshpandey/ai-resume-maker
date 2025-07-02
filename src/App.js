@@ -8,7 +8,6 @@ import {
   CssBaseline,
   Box,
   FormControl,
-  Button,
   InputLabel,
   Select,
   MenuItem,
@@ -18,7 +17,6 @@ import ResumeForm from './components/ResumeForm';
 import Preview from './components/Preview';
 import { generateSummaryAndBullets } from './utils/togetherai.js';
 import DownloadButton from './components/DownloadButton.js';
-import ATSAnalyzer from './components/ATSAnalyzer';
 
 function App() {
   const [formData, setFormData] = useState({
@@ -131,25 +129,6 @@ ${experienceText}
               <MenuItem value="minimal">Minimal</MenuItem>
             </Select>
           </FormControl>
-          <Button
-  variant="outlined"
-  onClick={() => {
-    const atsSection = document.getElementById('ats-score-box');
-    if (atsSection) atsSection.scrollIntoView({ behavior: 'smooth' });
-  }}
-  sx={{
-    mb: 3,
-    color: '#1976d2',
-    borderColor: '#1976d2',
-    fontWeight: 600,
-    textTransform: 'none',
-    '&:hover': {
-      backgroundColor: '#e3f2fd'
-    }
-  }}
->
-  🔍 Check ATS Score
-</Button>
 
           <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} gap={4}>
             <Box flex={1} minWidth={380}>
@@ -183,20 +162,6 @@ ${experienceText}
               </Box>
             </Box>
           </Box>
-        </Box>
-        <Box
-          id="ats-score-box"
-          sx={{
-            mt: 6,
-            p: 4,
-            bgcolor: '#f0f4ff',
-            borderRadius: 2,
-            border: '2px dashed #1976d2',
-            boxShadow: 2,
-            zIndex: 10
-          }}
-        >
-          <ATSAnalyzer resumeData={formData} />
         </Box>
       </Container>
     </>

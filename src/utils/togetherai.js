@@ -1,25 +1,21 @@
 import axios from 'axios';
 
-export async function generateSummaryAndBullets(prompt, options = {}) {
+export async function generateSummaryAndBullets(prompt) {
   try {
     const response = await axios.post(
       'https://api.together.xyz/v1/chat/completions',
       {
         model: 'meta-llama/Llama-3-8b-chat-hf',
         messages: [
-          ...(options.systemMessage
-            ? [{ role: 'system', content: options.systemMessage }]
-            : options.type === 'resume'
-            ? [{
-                role: 'system',
-                content: `
+          {
+            role: 'system',
+            content: `
 You are a professional resume generator. Your output should contain:
 - A concise 20-30 words professional summary.
 - 3–5 action-oriented bullet points under "Experience Highlights".
 Do NOT repeat the user’s name/email, and do NOT include phrases like “Here is” or “Based on”. Return only clean, direct content.
-                `.trim()
-              }]
-            : []),
+            `.trim(),
+          },
           { role: 'user', content: prompt },
         ],
         temperature: 0.7,
@@ -35,20 +31,15 @@ Do NOT repeat the user’s name/email, and do NOT include phrases like “Here i
 
     const raw = response.data.choices[0]?.message?.content?.trim() || '';
 
-    // 🟡 ATS response: return raw content
-    if (options.type === 'ats') {
-      return { atsFeedback: raw };
-    }
-
-    // 🔵 Resume summary/bullets: parse structured output
+    // Normalize and split the content
     let cleaned = raw
       .replace(/here\s+is\s+(a\s+)?(for\s+)?[^\n]*[:\-]*/gi, '')
       .replace(/professional\s+summary[:\-]*/gi, '')
       .replace(/experience\s+highlights[:\-]*/gi, '')
       .replace(/experience[:\-]*/gi, '')
-      .replace(/^(name|email|job title)[:\-].*$/gim, '')
-      .replace(/\*{1,}/g, '')
-      .replace(/^["']|["']$/g, '')
+      .replace(/^(name|email|job title)[:\-].*$/gim, '') // remove any repeated inputs
+      .replace(/\*{1,}/g, '') // asterisks
+      .replace(/^["']|["']$/g, '') // leading/trailing quotes
       .trim();
 
     const lines = cleaned
