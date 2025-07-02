@@ -9,6 +9,18 @@ import {
 } from '@mui/material';
 import { generateSummaryAndBullets } from '../utils/togetherai';
 
+const getProgressColor = (value) => {
+  if (value >= 80) return 'success';   // Green
+  if (value >= 50) return 'warning';   // Orange
+  return 'error';                      // Red
+};
+
+const getEmojiLabel = (value) => {
+  if (value >= 80) return '🟢 Excellent';
+  if (value >= 50) return '🟠 Average';
+  return '🔴 Needs Improvement';
+};
+
 const ATSAnalyzer = ({ resumeData }) => {
   const [jobDescription, setJobDescription] = useState('');
   const [atsFeedback, setAtsFeedback] = useState('');
@@ -85,7 +97,7 @@ Tips:
   };
 
   return (
-    <Box sx={{ mt: 4 }}>
+    <Box id="ats-analyzer" sx={{ mt: 4 }}>
       <Typography variant="h6" gutterBottom>
         ATS Score Analyzer
       </Typography>
@@ -111,27 +123,43 @@ Tips:
 
       {(score !== null || keywordMatch !== null || tips.length > 0) && (
         <Box sx={{ mt: 3, p: 2, bgcolor: '#f9f9f9', borderRadius: 2 }}>
-          <Typography variant="subtitle1" gutterBottom>
+          {/* <Typography variant="subtitle1" gutterBottom>
             Results
-          </Typography>
+          </Typography> */}
 
           {score !== null && (
             <Box sx={{ mb: 2 }}>
-              <Typography>ATS Score: {score}/100</Typography>
-              <LinearProgress variant="determinate" value={score} sx={{ height: 10, borderRadius: 5 }} />
+              <Typography>
+                ATS Score: {score}/100 &nbsp;
+                <strong>{getEmojiLabel(score)}</strong>
+              </Typography>
+              <LinearProgress
+                variant="determinate"
+                value={score}
+                color={getProgressColor(score)}
+                sx={{ height: 10, borderRadius: 5 }}
+              />
             </Box>
           )}
 
           {keywordMatch !== null && (
             <Box sx={{ mb: 2 }}>
-              <Typography>Keyword Match: {keywordMatch}%</Typography>
-              <LinearProgress variant="determinate" value={keywordMatch} sx={{ height: 10, borderRadius: 5 }} />
+              <Typography>
+                Keyword Match: {keywordMatch}% &nbsp;
+                <strong>{getEmojiLabel(keywordMatch)}</strong>
+              </Typography>
+              <LinearProgress
+                variant="determinate"
+                value={keywordMatch}
+                color={getProgressColor(keywordMatch)}
+                sx={{ height: 10, borderRadius: 5 }}
+              />
             </Box>
           )}
 
           {tips.length > 0 && (
             <Box sx={{ mt: 2 }}>
-              <Typography fontWeight="bold">Tips:</Typography>
+              <Typography fontWeight="bold">Tips to Improve:</Typography>
               <ul>
                 {tips.map((tip, idx) => (
                   <li key={idx}>{tip.replace(/^\d+\.\s*/, '')}</li>
