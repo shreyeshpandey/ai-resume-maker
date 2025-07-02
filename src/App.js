@@ -10,8 +10,9 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
 } from '@mui/material';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 import ResumeForm from './components/ResumeForm';
 import Preview from './components/Preview';
 import { generateSummaryAndBullets } from './utils/togetherai.js';
@@ -76,9 +77,44 @@ ${experienceText}
       <CssBaseline />
       <Container maxWidth="xl">
         <Box sx={{ my: 4 }}>
-          <Typography variant="h3" gutterBottom align="center">
-            AI Resume Maker
-          </Typography>
+        <Box sx={{ textAlign: 'center', mb: 4 }}>
+  <Box
+    sx={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 1,
+      justifyContent: 'center',
+      mb: 1
+    }}
+  >
+    <SmartToyIcon sx={{ fontSize: '3rem', color: '#1976d2' }} />
+    <Typography
+      variant="h3"
+      sx={{
+        fontWeight: 800,
+        background: 'linear-gradient(to right, #1976d2, #0d47a1)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        fontFamily: '"Segoe UI", "Roboto", "Helvetica Neue", sans-serif',
+        letterSpacing: 1.5,
+        textTransform: 'uppercase'
+      }}
+    >
+      Jobsy
+    </Typography>
+  </Box>
+
+  <Typography
+    variant="subtitle1"
+    sx={{
+      color: 'text.secondary',
+      fontStyle: 'italic',
+      letterSpacing: 1,
+    }}
+  >
+    AI-powered Resume Builder for Professionals
+  </Typography>
+</Box>
 
           <FormControl fullWidth sx={{ my: 2 }}>
             <InputLabel id="layout-select-label">Select Template</InputLabel>
